@@ -31,4 +31,5 @@ router.register(r'profile', userView.ProfileViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/comment/', baseView.CommentViewSet.as_view()),
 ]
