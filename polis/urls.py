@@ -22,11 +22,11 @@ from user import views as userView
 
 
 router = routers.DefaultRouter()
-router.register(r'type/', baseView.TypeViewSet)
-router.register(r'theme/', baseView.ThemeViewSet)
-router.register(r'proposal/', baseView.ProposalViewSet)
-router.register(r'Debate/', baseView.DebateViewSet)
-router.register(r'profile/', userView.ProfileViewSet)
+router.register(r'type', baseView.TypeViewSet)
+router.register(r'theme', baseView.ThemeViewSet)
+router.register(r'proposal', baseView.ProposalViewSet)
+router.register(r'debate', baseView.DebateViewSet)
+router.register(r'profile', userView.ProfileViewSet)
 
 
 urlpatterns = [
