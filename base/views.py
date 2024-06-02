@@ -4,8 +4,7 @@ from rest_framework.request import Request
 
 from base.models import Type, Theme, Proposal, Debate, Comments
 from polis.serializer import (TypeSerializer, ThemeSerializer,
-                              ProposalSerializer, DebateSerializer,
-                              CommentsSerializer)
+                              ProposalSerializer, DebateSerializer)
 
 
 class TypeViewSet(viewsets.ModelViewSet):
@@ -28,7 +27,7 @@ class DebateViewSet(viewsets.ModelViewSet):
     serializer_class = DebateSerializer
 
 
-class CommentViewSet(views.View):
+class CommentViewSet(views.APIView):
     def get(self, request: Request, pk: int=None) -> Response:
         try:
             proposal = Proposal.objects.get(pk=pk)
@@ -39,9 +38,8 @@ class CommentViewSet(views.View):
             )
 
         comments = Comments.get_comments(proposal)
-        serializer = CommentsSerializer(data=comments)
 
         return Response(
-            data=serializer.data,
+            data=comments,
             status=status.HTTP_200_OK,
         )

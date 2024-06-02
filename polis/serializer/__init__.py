@@ -32,39 +32,3 @@ class DebateSerializer(serializers.ModelSerializer):
     class Meta:
         model = baseModel.Debate
         fields = ['__all__']
-
-
-class ProfileCommentSerializer(serializers.Serializer):
-    id = serializers.IntegerField(
-        required=True,
-    )
-    name = serializers.CharField(
-        read_only=True,
-        max_length=300,
-    )
-    first_name = serializers.CharField(
-        write_only=True,
-        required=True,
-        max_length=150,
-    )
-    last_name = serializers.CharField(
-        write_only=True,
-        required=True,
-        max_length=150,
-    )
-
-
-class CommentsSerializer(serializers.Serializer):
-    _id = serializers.CharField(
-        read_only=True,
-        max_length=24,
-    )
-    user = ProfileCommentSerializer()
-    comment = serializers.CharField(
-        max_length=250,
-        required=True,
-    )
-    sources = serializers.ListField()
-    timestamp = serializers.FloatField(
-        read_only=True,
-    )
