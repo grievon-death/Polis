@@ -59,10 +59,7 @@ class CommentsSerializer(serializers.Serializer):
         read_only=True,
         max_length=24,
     )
-    user = serializers.Field(
-        ProfileCommentSerializer,
-        required=True,
-    )
+    user = ProfileCommentSerializer()
     comment = serializers.CharField(
         max_length=250,
         required=True,
