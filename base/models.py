@@ -21,6 +21,10 @@ class Type(models.Model):
         help_text='Descrição do tipo de discussão.',
     )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['name'])
+        ]
 
 class Theme(models.Model):
     name = models.CharField(
@@ -37,6 +41,11 @@ class Theme(models.Model):
         on_delete=models.CASCADE,
         help_text='Tipo de discussão à qual pertence',
     )
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['-name'])
+        ]
 
 
 class ProposalBase:
@@ -71,7 +80,7 @@ class ProposalBase:
         blank=False,
         help_text='Json com as fontes da proposta.',
     )
-    creation_date = models.FloatField(
+    creation_timestamp = models.FloatField(
         null=False,
         blank=False,
         default=datetime.now().timestamp(),
