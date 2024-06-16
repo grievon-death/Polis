@@ -26,6 +26,7 @@ class Type(models.Model):
             models.Index(fields=['name'])
         ]
 
+
 class Theme(models.Model):
     name = models.CharField(
         max_length=45,

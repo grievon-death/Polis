@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import include, path, re_path
+from django.urls import include, path
 from rest_framework import routers
 
 from base import views as baseView
@@ -26,10 +26,12 @@ router.register(r'type', baseView.TypeViewSet)
 router.register(r'theme', baseView.ThemeViewSet)
 router.register(r'proposal', baseView.ProposalViewSet)
 router.register(r'debate', baseView.DebateViewSet)
-router.register(r'profile', userView.ProfileViewSet)
 
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    re_path('^api/comment/(?P<collection>.+)/$', baseView.CommentViewSet.as_view()),
+    path('api/profile/', userView.ProfileViewSet.as_view()),
+    path('api/singin/', userView.SingInViewSet.as_view()),
+    path('api/login/', userView.LoginViewSet.as_view()),
+    path('api/comment/', baseView.CommentViewSet.as_view()),
 ]
