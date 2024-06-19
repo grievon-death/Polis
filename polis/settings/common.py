@@ -43,6 +43,16 @@ INSTALLED_APPS = [
     'django_filters',
     'base',
     'user',
+    'corsheaders',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8008',
+    'http://127.0.0.1:8008',
+    'http://0.0.0.0:8008',
+    'http://localhost:4200',
+    'http://127.0.0.1:4200',
+    'http://0.0.0.0:4200',
 ]
 
 REST_FRAMEWORK = {
@@ -59,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'polis.urls'
