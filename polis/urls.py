@@ -26,12 +26,11 @@ router.register(r'type', baseView.TypeViewSet)
 router.register(r'theme', baseView.ThemeViewSet)
 router.register(r'proposal', baseView.ProposalViewSet)
 router.register(r'debate', baseView.DebateViewSet)
+router.register(r'profile', userView.ProfileViewSet)
 
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('api/profile/', userView.ProfileViewSet.as_view()),
-    path('api/singin/', userView.SingInViewSet.as_view()),
-    path('api/login/', userView.LoginViewSet.as_view()),
+    path('api/singin/', userView.singin),
     path('api/comment/', baseView.CommentViewSet.as_view()),
 ]
