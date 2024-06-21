@@ -29,8 +29,10 @@ services:
       - 5432
     volumes:
       - postgre.vol:/var/lib/postgresql/data
+    env_file: environment/container
     environment:
-      POSTGRES_PASSWORD: 'M3rd@M3$m0'
+      POSTGRES_DB: $POSTGRE_DATABASE
+      POSTGRES_PASSWORD: $POSTGRE_PASSWORD
 
   mongodb:
     image: mongo:7.0.11
@@ -43,9 +45,6 @@ services:
       - 27017
     volumes:
       - mongodb.vol:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 'M3rd@M3$m0'
  
   polis:
     build: "."
@@ -57,4 +56,4 @@ services:
     expose:
       - 8008
     env_file: environment/container
-    command: make development
+    command: make production
