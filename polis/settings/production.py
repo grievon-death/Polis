@@ -1,6 +1,6 @@
 from polis.settings.common import *
 
-DEBUG = False
+# DEBUG = False
 
 DATABASES = {
     'default': {
@@ -14,7 +14,5 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS = [
-    '0.0.0.0.',
-    '127.0.0.1',
-    'localhost',
+    '10.0.5.1',
 ]
