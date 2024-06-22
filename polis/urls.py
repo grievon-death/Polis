@@ -32,5 +32,6 @@ router.register(r'profile', userView.ProfileViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api/singin/', userView.singin),
+    path('api/login/', userView.login),
     path('api/comment/', baseView.CommentViewSet.as_view()),
 ]

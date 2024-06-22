@@ -11,7 +11,7 @@ from polis.serializer import ProfileSerializer, SingInSerializer, LoginSerialize
 from polis.utils import Tool
 
 
-class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
+class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     filter_backends = (
         DjangoFilterBackend,
@@ -32,11 +32,11 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     def create(self, request: Request) -> Response:
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def update(self, request: Request, pk=None) -> Response:
+    def update(self, request: Request, id: int) -> Response:
         _data = request.data
 
         try:
-            _profile = Profile.objects.get(id=pk)
+            _profile = Profile.objects.get(id=id)
         except Profile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -47,7 +47,7 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
 
             if _data.get('password'):
                 _profile.set_password(_data.pop('password'))
-    
+
             _profile.save()
         except AlreadyExists:
             return Response(
@@ -74,9 +74,9 @@ def singin(request: Request) -> Response:
     _requireds = ["first_name", "last_name", "email", "document", "password"]
     _data = request.data
 
-    if not all([k in _requireds for k in _data.keys()]):
+    if not all([k in _requireds for k in _data.keys()]) or not _data.keys():
         return Response(
-            data={ 'error': f'Missing required fields: {",".join(_requireds)}' },
+            data={ 'error': f'All and only these fields: {",".join(_requireds)}' },
             status=status.HTTP_400_BAD_REQUEST,
         )
 
@@ -100,3 +100,34 @@ def singin(request: Request) -> Response:
         data=SingInSerializer(_profile).data,
         status=status.HTTP_201_CREATED,
     )
+
+
+@api_view(['POST'])
+def login(request: Request) -> Response:
+    _requireds = ['email', 'password']
+    _data = request.data
+
+    if not all([k in _requireds for k in _data.keys()]) or not _data.keys():
+        return Response(
+            data={ 'error': f'All and only these fields: {",".join(_requireds)}' },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        _user = Profile.objects.get(email=_data['email'])
+
+        if not _user.check_password(_data['password']):
+            return Response(
+                data={ 'error': 'Invalid email or password!' },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+    except Profile.DoesNotExist:
+        return Response(
+            data={ 'error': 'Invalid email or password!' },
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    return Response(
+        data={ 'token': 'toma essa token, caraio' },
+        status=status.HTTP_200_OK,
+    )   
