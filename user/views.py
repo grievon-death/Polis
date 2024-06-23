@@ -6,9 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from user.models import Profile
+from user.models import Profile, TokenMap
+from polis.authentication import TokenManager
 from polis.serializer import ProfileSerializer, SingInSerializer, LoginSerializer
-from polis.utils import Tool
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -126,8 +126,14 @@ def login(request: Request) -> Response:
             data={ 'error': 'Invalid email or password!' },
             status=status.HTTP_404_NOT_FOUND,
         )
+    
+    _token = TokenMap(
+        user=_user,
+        token=TokenManager.generate_token(_user)
+    )
+    _token.save()
 
     return Response(
-        data={ 'token': 'toma essa token, caraio' },
+        data=LoginSerializer(_token).data,
         status=status.HTTP_200_OK,
     )   
