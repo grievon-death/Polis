@@ -1,51 +1,13 @@
 version: '3.9'
 
 
-volumes:
-  postgre.vol:
-  mongodb.vol:
-
-
 networks:
   polis:
     name: polis
     driver: bridge
-    ipam:
-      config:
-        - subnet: 10.0.0.0/16
-          ip_range: 10.0.5.0/24
-          gateway: 10.0.0.1
 
 
-services:
-  postgre:
-    image: postgres:16.3
-    container_name: postgre.server
-    restart: on-failure
-    networks:
-      polis:
-        ipv4_address: 10.0.0.2
-    expose:
-      - 5432
-    volumes:
-      - postgre.vol:/var/lib/postgresql/data
-    env_file: environment/container
-    environment:
-      POSTGRES_DB: $POSTGRE_DATABASE
-      POSTGRES_PASSWORD: $POSTGRE_PASSWORD
-
-  mongodb:
-    image: mongo:7.0.11
-    container_name: mongo.server
-    restart: on-failure
-    networks:
-      polis:
-        ipv4_address: 10.0.0.3
-    expose:
-      - 27017
-    volumes:
-      - mongodb.vol:/data/db
- 
+services: 
   polis:
     build: "."
     container_name: polis.rest
