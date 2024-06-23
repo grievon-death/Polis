@@ -44,30 +44,7 @@ class SingInSerializer(serializers.ModelSerializer):
         fields = ["first_name", "last_name", "email"]
 
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(
-        write_only=True,
-        required=True,
-    )
-    password = serializers.CharField(
-        min_length=8,
-        max_length=20,
-        write_only=True,
-        required=True,
-    )
-    token = serializers.CharField(
-        max_length=1000,
-        read_only=True,
-    )
-
-    def create(self, **validated_data: dict) -> None:
-        user = userModel.Profile.objects.get(
-            email=validated_data.get('email'),
-        )
-        auth, created = userModel.TokenMap.objects.get_or_create(user=user)
-
-        if not created:
-            return
-
-        auth.token = 'token'
-        return auth
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = userModel.TokenMap
+        fields = ['token']
